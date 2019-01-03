@@ -11,7 +11,10 @@ This repository is composed of:
 posterior usage in the Arduino micro-controller.
 * RPI_Sever - a folder containing the code developed for the server monitoring
 the luminaires, implemented in C++ for a Raspberry PI.
-
+* Identification - a folder containing the code used to perform identification
+of the system, consisting of MatLab scripts and Arduino code.
+* Consensus_MatLab - a folder containing the code used to test the consensus
+algorithm
 
 <!-- ## Getting Started
 
@@ -58,6 +61,6 @@ Add additional notes about how to deploy this on a live system -->
 
 ## Authors
 
-* **Pedro Trindade** - *Initial work*
-* **Miguel Luis** - *Initial work*
-* **João Santos** - *Initial work*
+* **Pedro Trindade**
+* **Miguel Luis**
+* **João Santos**
