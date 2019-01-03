@@ -9,8 +9,9 @@ mutex mut[2];
 condition_variable cv;
 mutex rw[2];
 
-// Queue to temporarily hold the messages
+// Queue to temporarily hold the messages for processing
 std::queue<i2c_msg> queue_i2c;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //  thread_server() - This thread runs the server
@@ -34,8 +35,7 @@ void thread_read_i2c(){
 	while(rpi_i2c.is_valid())
 		if(rpi_i2c.read_message(msg.bytes)){
             msg.t = steady_clock::now();
-            queue_i2c.push(msg);
-        }
+            queue_i2c.push(msg); }
 
     std::cout << "Error in I2C communications" << '\n';
 }

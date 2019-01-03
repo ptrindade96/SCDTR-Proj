@@ -4,21 +4,7 @@ using namespace std;
 using namespace std::chrono;
 
 ///////////////////////////////////////////////////////////////////////////////
-//  is_available() - predicate to return flag
-///////////////////////////////////////////////////////////////////////////////
-bool Luminaires::is_available(int id){
-    return avail[id];
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//  is_valid() - Checks if the data stucture is valid
-///////////////////////////////////////////////////////////////////////////////
-bool Luminaires::is_valid(){
-    return valid;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//  reset() - Resets the luminaires data
+//  Luminaires::reset - Resets the luminaires data
 ///////////////////////////////////////////////////////////////////////////////
 void Luminaires::reset(i2c_msg msg1,i2c_msg msg2){
     char id_1 = (msg1.bytes[0]&0b00000001) + '0';
@@ -45,7 +31,8 @@ void Luminaires::reset(i2c_msg msg1,i2c_msg msg2){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  update_value() - Receives a new message and updates the internal data
+//  Luminaires::update_value - Receives a new message and updates the internal
+//  data
 ///////////////////////////////////////////////////////////////////////////////
 void Luminaires::update_values(i2c_msg m){
     char id_ = (m.bytes[0] & 0b00000001);
@@ -111,12 +98,12 @@ void Luminaires::update_values(i2c_msg m){
     avail[id_] = true;
     cv.notify_all();
 
-
     return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  request_response() - Transform a request string into a response string
+//  Luminaires::request_response - Transform a request string into a response
+//  string
 ///////////////////////////////////////////////////////////////////////////////
 string Luminaires::request_response(string request){
     string index = request.substr(2,3);
@@ -165,7 +152,7 @@ string Luminaires::request_response(string request){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  request_is_valid - Checks whether a given request is valid
+//  Luminaires::request_is_valid - Checks whether a given request is valid
 ///////////////////////////////////////////////////////////////////////////////
 bool Luminaires::request_is_valid(string request){
     if(request.length() == REC_LENGTH){
@@ -182,7 +169,8 @@ bool Luminaires::request_is_valid(string request){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  remove_older_than_1min - removes older elements from list
+//  Luminaires::remove_older_than_1min - checks the older elements in the
+// buffer. emoves elements older than one minute.
 ///////////////////////////////////////////////////////////////////////////////
 void Luminaires::remove_older_than_1min(std::deque<timed_values> *l){
     auto now = std::chrono::steady_clock::now();
@@ -191,4 +179,12 @@ void Luminaires::remove_older_than_1min(std::deque<timed_values> *l){
         l->pop_front();
         elapsed = now - l->front().time;
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//  Luminaires::is_valid() - read access to internal variable. Determines
+// If there's valid data.
+///////////////////////////////////////////////////////////////////////////////
+bool Luminaires::is_valid(){
+    return valid;
 }

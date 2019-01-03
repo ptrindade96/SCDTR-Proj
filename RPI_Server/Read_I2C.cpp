@@ -4,8 +4,8 @@
 int Read_I2C::obj_count = 0;
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Constructor
-//  Initialize object and setup I2C communications
+//  Read_I2C::Read_I2C() - Constructor. Initialize object and setup I2C
+// communications
 ///////////////////////////////////////////////////////////////////////////////
 Read_I2C::Read_I2C(int addr){
     if(obj_count==0){
@@ -13,33 +13,27 @@ Read_I2C::Read_I2C(int addr){
             valid = false;
         else{
             valid = true;
-            init_slave(addr);
-        }
-    }
-    else{
+            init_slave(addr); } }
+    else
         valid = false;
-    }
     obj_count++;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
-//  Destructor
-//  Make proper termination of communications
+//  Read_I2C::~Read_I2C() - Destructor. Makes proper termination of
+// communications
 ///////////////////////////////////////////////////////////////////////////////
 Read_I2C::~Read_I2C(){
     obj_count--;
-    if(valid){
+    if(valid)
         Read_I2C::close_slave();
-    }
-    if(obj_count==0){
+    if(obj_count==0)
         gpioTerminate();
-    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Read_I2C::init_slave()
-//  Setup I2C pin modes, and initialize communication protocol
+//  Read_I2C::init_slave() - Setup I2C pin modes, and initialize
+// communication protocol
 ///////////////////////////////////////////////////////////////////////////////
 void Read_I2C::init_slave(int addr){
     gpioSetMode(18, PI_ALT3);
@@ -64,8 +58,7 @@ void Read_I2C::init_slave(int addr){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Read_I2C::close_slave()
-//  End I2C communications
+//  Read_I2C::close_slave() - End I2C communications
 ///////////////////////////////////////////////////////////////////////////////
 void Read_I2C::close_slave(void) {
     xfer.control = 0;
@@ -74,7 +67,9 @@ void Read_I2C::close_slave(void) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Read_I2C::read_buff()
+//  Read_I2C::read_message() - receives an array to contain the received bytes
+// and returns it by reference. Returns true if data was received, false
+// otherwise.
 ///////////////////////////////////////////////////////////////////////////////
 bool Read_I2C::read_message(char msg[]){
     if(!valid) return false;

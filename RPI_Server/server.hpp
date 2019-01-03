@@ -1,6 +1,7 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+// C++ standard library
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -11,16 +12,20 @@
 #include <string>
 #include <algorithm>
 #include <unordered_map>
+
+// Boost library
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
-#include <pigpio.h>
+// Includes for PIGPIO library
 #include <pthread.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
 #include <stdlib.h>
+#include <pigpio.h>
 
+// Defines
 #define RASPBERRY_ADDR 0
 #define STD_MSG_LENGHT  4
 #define LISTENING_PORT 17000
@@ -29,28 +34,33 @@
 #define MAX_D 255
 #define BUFF_TIME_SEC 60
 #define BUFF_EST_LENGTH 60*100*15
-#define TS 0.1
+#define TS 0.01
 
+// Some namespaces
 using namespace std;
 using namespace boost::asio;
 using namespace std::chrono;
 using ip::tcp;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Structure: Data structures
+//  Data structures
 ///////////////////////////////////////////////////////////////////////////////
+// timed_values - To hold timed values in the buffer
 typedef struct timed_values{
     steady_clock::time_point time;
     float value;
 }timed_values;
-
+// i2c_msg - To keep keep the message to be inserted in the queue
 typedef struct i2c_msg{
     char bytes[STD_MSG_LENGHT];
     steady_clock::time_point t;
 }i2c_msg;
 
+
 ///////////////////////////////////////////////////////////////////////////////
-// Class: Read_I2C
+//  Class: Read_I2C - Implements an higher abstraction level to the I2C slave
+// implementation for monitoring the bus. Constructor initializes GPIO
+// and setup the I2C communication.
 ///////////////////////////////////////////////////////////////////////////////
 class Read_I2C{
 private:
@@ -68,7 +78,8 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Class: Luminaires
+//  Class: Luminaires - Use to implement data storage. Safely keeps data and
+// provides functions that regulate the access to data.
 ///////////////////////////////////////////////////////////////////////////////
 class Luminaires{
 private:
@@ -87,7 +98,9 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Class: Connection
+//  Class: Connection - Each instance of this class represents a TCP client
+// connection. It owns a socket associated with the connection, and handles
+// client requests.
 ///////////////////////////////////////////////////////////////////////////////
 class Connection : public boost::enable_shared_from_this<Connection>{
 private:
@@ -105,11 +118,14 @@ public:
     void handle_request(std::string request);
     void send_message(string msg);
     tcp::socket& socket();
-    static pointer create_new(io_service &io){  return pointer(new Connection(io)); }
+    static pointer create_new(io_service &io){ return pointer(new Connection(io)); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Class: Server
+//  Class: Server - This class implements the server, waiting for client
+// connections. It owns an acceptor, which asynchronously accepts connections
+// and creates a new instance of class Connection. (Note: This is fully
+// defined in this header)
 ///////////////////////////////////////////////////////////////////////////////
 class Server{
 private:
@@ -130,14 +146,13 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Global Variables
+// Global variable declaration
 ///////////////////////////////////////////////////////////////////////////////
 extern Luminaires Data;
-
 extern mutex mut[2];
 extern mutex rw[2];
-
 extern condition_variable cv;
 extern bool avail[2];
+
 
 #endif

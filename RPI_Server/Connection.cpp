@@ -23,7 +23,7 @@ void Connection::start_read(){
 
 ///////////////////////////////////////////////////////////////////////////////
 //  Connection::read() - Makes the async_read() and defines the function
-//  (lambda) associated to the async_read() (read callback)
+//  (lambda) associated to the async_read() (read callback).
 ///////////////////////////////////////////////////////////////////////////////
 void Connection::read(){
     auto self(shared_from_this());
@@ -33,7 +33,6 @@ void Connection::read(){
                 std::cout << "Error: " << err.message() << std::endl;
                 std::cout << "Close connection to " << id << '\n';
                 sock.close();
-
             }else{
                 request[bt] = '\0';
                 std::string rqt_str(request);
@@ -42,16 +41,14 @@ void Connection::read(){
                     if(flag_stream){
                         if(rqt_str==previous_request){
                             flag_stream = false;
-                            send_message("ack\n");
-                        }
+                            send_message("ack\n"); }
                     }else{
-                        if (rqt_str[0]=='s'){
+                        if(rqt_str[0]=='s'){
                             flag_stream = true;
-                            previous_request = rqt_str;
-                        }
+                            previous_request = rqt_str; }
                         handle_request(rqt_str);
                     }
-                } else send_message("Invalid request\n");
+                }else send_message("Invalid request\n");
                 read();
             }
         });
