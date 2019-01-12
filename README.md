@@ -15,6 +15,8 @@ the luminaires, implemented in C++ for a Raspberry PI.
 of the system, consisting of MatLab scripts and Arduino code.
 * Consensus_MatLab - a folder containing the code used to test the consensus
 algorithm
+* Arduino_Controller - a folder containing the code developed for the luminaires'
+Arduino board.
 
 <!-- ## Getting Started
 
