@@ -6,6 +6,8 @@ unit of Real-Time Distributed Control Systems from Instituto Superior Técnico.
 The system's objective consists of ensuring minimum illuminance requisites,
 dependent on the desk’s occupancy, while optimizing energy consumption.
 
+![Alt text](./Prototype_Pictures/49343480_2242622309392435_1720796935113146368_n.jpg)
+
 This repository is composed of:
 * Consensus_C++ - a folder with the consensus implementation in C++, for
 posterior usage in the Arduino micro-controller.
@@ -17,6 +19,8 @@ of the system, consisting of MatLab scripts and Arduino code.
 algorithm
 * Arduino_Controller - a folder containing the code developed for the luminaires'
 Arduino board.
+* Prototype_Pictures - a folder containing pictures of the prototype used in
+development (shoe box with Arduinos, Circuitry and Raspberry Pi).
 
 <!-- ## Getting Started
 
